@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 const { generateJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
+const { getMenuFrontend } = require('../helpers/get-menu-frontend');
 
 const login = async (req, res = response) => {
   const { email, password } = req.body;
@@ -34,6 +35,7 @@ const login = async (req, res = response) => {
     res.json({
       ok: true,
       token,
+      menu: getMenuFrontend(userDb.role),
     });
   } catch (error) {
     console.log(error);
@@ -72,14 +74,12 @@ const googleSignIn = async (req, res = response) => {
 
     res.status(200).json({
       ok: true,
-      email,
-      name,
-      picture,
       token,
+      menu: getMenuFrontend(user.role),
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
+    res.status(401).json({
       ok: false,
       msg: 'Invalid google token',
     });
@@ -97,6 +97,7 @@ const renewToken = async (req, res = response) => {
     ok: true,
     token,
     user,
+    menu: getMenuFrontend(user.role),
   });
 };
 

@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../models/user.model');
 const { generateJWT } = require('../helpers/jwt');
+const { getMenuFrontend } = require('../helpers/get-menu-frontend');
 
 const getUsers = async (req, res) => {
   const from = Number(req.query.from) || 0;
@@ -50,6 +51,7 @@ const createUser = async (req, res = response) => {
       ok: true,
       user,
       token,
+      menu: getMenuFrontend(user.role),
     });
   } catch (error) {
     console.log(error);
