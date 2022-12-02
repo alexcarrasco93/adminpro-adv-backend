@@ -2,6 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 
 const { dbConnection } = require('./database/config');
 
@@ -28,6 +31,17 @@ app.use('/api/all', require('./routes/searches.routes'));
 app.use('/api/upload', require('./routes/uploads.routes'));
 app.use('/api/login', require('./routes/auth.routes'));
 
-app.listen(process.env.PORT, () => {
-  console.log('Server running on port ' + process.env.PORT);
-});
+// app.listen(process.env.PORT, () => {
+//   console.log('Server running on port ' + process.env.PORT);
+// });
+
+const credentials = {
+  key: fs.readFileSync('sslcert/key.pem'),
+  cert: fs.readFileSync('sslcert/cert.pem')
+};
+
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(3000);
+httpsServer.listen(8000);
