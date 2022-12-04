@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 
 const express = require('express');
 const cors = require('cors');
@@ -31,13 +32,17 @@ app.use('/api/all', require('./routes/searches.routes'));
 app.use('/api/upload', require('./routes/uploads.routes'));
 app.use('/api/login', require('./routes/auth.routes'));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public/index.html'));
+});
+
 // app.listen(process.env.PORT, () => {
 //   console.log('Server running on port ' + process.env.PORT);
 // });
 
 const credentials = {
   key: fs.readFileSync('sslcert/key.pem'),
-  cert: fs.readFileSync('sslcert/cert.pem')
+  cert: fs.readFileSync('sslcert/cert.pem'),
 };
 
 const httpServer = http.createServer(app);
