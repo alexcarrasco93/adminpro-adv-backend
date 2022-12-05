@@ -48,7 +48,7 @@ const credentials = {
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(3000);
-httpsServer.listen(8000);
-// httpServer.listen(80);
-// httpsServer.listen(443);
+// httpServer.listen(3000);
+// httpsServer.listen(8000);
+httpServer.listen(80);
+httpsServer.listen(443);
